@@ -912,15 +912,15 @@ Saludos!</pre>
 <div class="chat-widget" id="chatWidget">
   <button class="chat-toggle" id="chatToggle" title="Chat con Max">💬</button>
   <div class="chat-panel" id="chatPanel">
-    <div class="chat-header">💬 Comentarios para Max</div>
+    <div class="chat-header">💬 Chat con Max</div>
     <div class="chat-messages" id="chatMessages">
       <div class="chat-msg">
         <div class="ctxt">Max · Ahora</div>
-        <div class="cbody">¡Hola! Déjame tus comentarios sobre cualquier sección del plan. Los reviso y actualizo en tiempo real. También puedes hablarme directo por WhatsApp.</div>
+        <div class="cbody">Hola Ricardo! Soy Max. Escribe tus comentarios sobre el plan y te respondo aquí mismo. Estoy del otro lado, no es un bot. 🦞</div>
       </div>
     </div>
     <div class="chat-input-area">
-      <input type="text" id="chatInput" placeholder="Tu comentario..." />
+      <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." />
       <button id="chatSend">Enviar</button>
     </div>
   </div>
@@ -940,72 +940,120 @@ document.querySelectorAll('#nav a').forEach(link => {
   });
 });
 
-// Chat Widget
+// === REAL CHAT WITH MAX ===
 const chatToggle = document.getElementById('chatToggle');
 const chatPanel = document.getElementById('chatPanel');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
 const chatMessages = document.getElementById('chatMessages');
 
+const INBOX_WEBHOOK = 'https://webhook.site/3d529484-86eb-4b7b-9761-a06c380ba9e3'; // Messages TO Max
+const OUTBOX_WEBHOOK = 'https://webhook.site/46af9d1d-79ba-4126-8364-2ffca63654f6';  // Responses FROM Max
+let lastMaxMsgId = null;
+let thinkingEl = null;
+
 chatToggle.addEventListener('click', () => {
   chatPanel.classList.toggle('open');
 });
 
-// Send comment to Max via webhook (Max monitors and responds on WhatsApp)
-const WEBHOOK_URL = 'https://webhook.site/3d529484-86eb-4b7b-9761-a06c380ba9e3';
-
-async function sendComment(text) {
-  const section = document.querySelector('.section.active').id || 'home';
-  const sectionName = document.querySelector('.section.active h1')?.textContent || section;
-  try {
-    const resp = await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        section: section,
-        sectionName: sectionName,
-        text: text,
-        timestamp: new Date().toISOString(),
-        user: 'Ricardo',
-        page: window.location.href
-      })
-    });
-    return resp.ok;
-  } catch(e) {
-    console.log('Webhook error:', e);
-    return false;
-  }
-}
-
-function addMessage(text, isUser) {
+function addMessage(text, who) {
   const div = document.createElement('div');
   div.className = 'chat-msg';
   div.innerHTML = `
-    <div class="ctxt">${isUser ? 'Tú' : 'Max'} · Ahora</div>
+    <div class="ctxt">${who} · ${new Date().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit'})}</div>
     <div class="cbody">${text}</div>
   `;
   chatMessages.appendChild(div);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+function showThinking() {
+  if (thinkingEl) return;
+  thinkingEl = document.createElement('div');
+  thinkingEl.className = 'chat-msg';
+  thinkingEl.id = 'thinking-msg';
+  thinkingEl.innerHTML = `
+    <div class="ctxt">Max</div>
+    <div class="cbody" style="opacity:0.7">
+      <span class="typing-dots">
+        <span>.</span><span>.</span><span>.</span>
+      </span> pensando...
+    </div>
+  `;
+  chatMessages.appendChild(thinkingEl);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideThinking() {
+  if (thinkingEl) { thinkingEl.remove(); thinkingEl = null; }
+}
+
+// Send message to Max
+async function sendToMax(text) {
+  const section = document.querySelector('.section.active').id || 'home';
+  const sectionName = document.querySelector('.section.active h1')?.textContent || section;
+  try {
+    const resp = await fetch(INBOX_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ section, sectionName, text, timestamp: new Date().toISOString(), user: 'Ricardo' })
+    });
+    return resp.ok;
+  } catch(e) { return false; }
+}
+
+// Poll for Max's responses
+async function checkResponses() {
+  try {
+    const resp = await fetch('https://webhook.site/token/46af9d1d-79ba-4126-8364-2ffca63654f6/requests?sorting=newest&per_page=10');
+    const data = await resp.json();
+    if (!data.data) return;
+    // Find new responses from Max (newer than lastMaxMsgId)
+    let found = false;
+    for (const req of data.data) {
+      if (req.uuid === lastMaxMsgId) break;
+      try {
+        const content = JSON.parse(req.content);
+        if (content.from === 'Max') {
+          hideThinking();
+          addMessage(content.text, 'Max');
+          lastMaxMsgId = req.uuid;
+          found = true;
+          break; // Show one at a time
+        }
+      } catch(e) {}
+    }
+    if (!found && !thinkingEl) {
+      // Set lastMaxMsgId to most recent to avoid re-processing
+      if (data.data.length > 0) lastMaxMsgId = data.data[0].uuid;
+    }
+  } catch(e) {}
+}
+
+// Initialize lastMaxMsgId
+(async function() {
+  try {
+    const resp = await fetch('https://webhook.site/token/46af9d1d-79ba-4126-8364-2ffca63654f6/requests?sorting=newest&per_page=1');
+    const data = await resp.json();
+    if (data.data && data.data.length > 0) lastMaxMsgId = data.data[0].uuid;
+  } catch(e) {}
+  // Start polling
+  setInterval(checkResponses, 5000);
+})();
+
+// Send handler
 chatSend.addEventListener('click', async () => {
   const text = chatInput.value.trim();
   if (!text) return;
-  addMessage(text, true);
+  addMessage(text, 'Tú');
   chatInput.value = '';
   chatSend.disabled = true;
-  chatSend.textContent = '...';
-  const ok = await sendComment(text);
+  const ok = await sendToMax(text);
   chatSend.disabled = false;
-  chatSend.textContent = 'Enviar';
   if (ok) {
-    setTimeout(() => {
-      addMessage('✅ Recibido. Max te responderá por WhatsApp en unos minutos.', false);
-    }, 600);
+    showThinking();
   } else {
-    setTimeout(() => {
-      addMessage('❌ Error al enviar. Escribe a Max directo por WhatsApp.', false);
-    }, 600);
+    addMessage('❌ Error. Intenta de nuevo o escríbeme por WhatsApp.', 'Sistema');
   }
 });
 
