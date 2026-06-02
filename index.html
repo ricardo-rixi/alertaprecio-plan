@@ -1344,6 +1344,16 @@ Saludos!</pre>
   var OUTBOX_API = 'https://webhook.site/token/46af9d1d-79ba-4126-8364-2ffca63654f6/requests?sorting=newest&per_page=50';
   var blockStates = {};
   var lastPollId = null;
+  var VERSION = 3;
+
+  // Force-clear stale localStorage when version changes
+  if (localStorage.getItem('ms_version') != VERSION) {
+    var keys = Object.keys(localStorage);
+    for (var k = 0; k < keys.length; k++) {
+      if (keys[k].indexOf('ms_') === 0) localStorage.removeItem(keys[k]);
+    }
+    localStorage.setItem('ms_version', VERSION);
+  }
 
   var STATES = {
     pending_auth: ['🔒 Pendiente autorizacion', 'btn-auth', 'Autorizar'],
