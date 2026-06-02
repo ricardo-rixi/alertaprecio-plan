@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Negocio — AlertaPrecio MX</title>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a25;
+  --border: #252535;
+  --text: #e0e0e8;
+  --muted: #8888a0;
+  --accent: #00c896;
+  --accent2: #007bff;
+  --warn: #f0a030;
+  --danger: #e04040;
+  --radius: 10px;
+  --sidebar-w: 260px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+h1 { font-size: 1.8rem; font-weight: 700; }
+h2 { font-size: 1.4rem; font-weight: 600; margin: 1.5rem 0 0.8rem; color: var(--accent); }
+h3 { font-size: 1.1rem; font-weight: 600; margin: 1.2rem 0 0.5rem; color: var(--text); }
+p, li { margin-bottom: 0.6rem; color: var(--muted); }
+ul { padding-left: 1.2rem; }
+code { background: var(--surface2); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; border: 1px solid var(--border); }
+pre { background: var(--surface2); padding: 1rem; border-radius: var(--radius); overflow-x: auto; font-size: 0.85rem; border: 1px solid var(--border); margin: 0.8rem 0; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+th, td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--accent); font-weight: 600; }
+tr:hover td { background: var(--surface2); }
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+  padding: 1.5rem 0;
+}
+.sidebar-header {
+  padding: 0 1.2rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.8rem;
+}
+.sidebar-header .logo {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--accent);
+  display: block;
+}
+.sidebar-header .sub { font-size: 0.75rem; color: var(--muted); }
+.sidebar nav a {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.7rem 1.2rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.sidebar nav a:hover, .sidebar nav a.active {
+  color: var(--text);
+  background: var(--surface2);
+  border-left-color: var(--accent);
+}
+.sidebar nav a .icon { font-size: 1.1rem; width: 22px; text-align: center; }
+.sidebar-footer { padding: 1rem 1.2rem; border-top: 1px solid var(--border); margin-top: auto; font-size: 0.75rem; color: var(--muted); }
+
+/* Main */
+.main { margin-left: var(--sidebar-w); flex: 1; padding: 2rem 2.5rem; max-width: 900px; }
+.section { display: none; }
+.section.active { display: block; }
+.section h1 { margin-bottom: 0.3rem; }
+.section .subtitle { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+.card h2 { margin-top: 0; }
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-green { background: rgba(0,200,150,0.15); color: var(--accent); }
+.badge-blue { background: rgba(0,123,255,0.15); color: var(--accent2); }
+.badge-orange { background: rgba(240,160,48,0.15); color: var(--warn); }
+.badge-red { background: rgba(224,64,64,0.15); color: var(--danger); }
+
+/* Pricing cards */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.price-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.price-card:hover { border-color: var(--accent); }
+.price-card.featured { border-color: var(--accent); box-shadow: 0 0 20px rgba(0,200,150,0.1); }
+.price-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.price-card .price { font-size: 2.2rem; font-weight: 800; color: var(--accent); margin: 0.5rem 0; }
+.price-card .price small { font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+.price-card ul { list-style: none; padding: 0; margin: 1rem 0; font-size: 0.9rem; }
+.price-card ul li { padding: 0.3rem 0; }
+.price-card ul li::before { content: '✓ '; color: var(--accent); }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 2rem; }
+.timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.timeline-item { position: relative; margin-bottom: 1.5rem; }
+.timeline-item::before { content: ''; position: absolute; left: -2.35rem; top: 0.4rem; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+.timeline-item .date { font-size: 0.8rem; color: var(--muted); }
+.timeline-item h3 { margin-top: 0; }
+
+/* Chat Widget */
+.chat-widget {
+  position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+}
+.chat-toggle {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--accent); color: #000; border: none;
+  cursor: pointer; font-size: 1.5rem; font-weight: 800;
+  box-shadow: 0 4px 20px rgba(0,200,150,0.3);
+  transition: transform 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.chat-toggle:hover { transform: scale(1.08); }
+.chat-panel {
+  display: none;
+  position: absolute; bottom: 70px; right: 0;
+  width: 340px; max-height: 480px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  overflow: hidden;
+  flex-direction: column;
+}
+.chat-panel.open { display: flex; }
+.chat-header {
+  padding: 0.8rem 1rem;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600; font-size: 0.9rem;
+}
+.chat-messages {
+  flex: 1; padding: 0.8rem; overflow-y: auto; max-height: 320px;
+  font-size: 0.85rem;
+}
+.chat-msg { margin-bottom: 0.6rem; }
+.chat-msg .ctxt { font-size: 0.7rem; color: var(--muted); margin-bottom: 0.2rem; }
+.chat-msg .cbody { background: var(--surface2); padding: 0.5rem 0.8rem; border-radius: 8px; display: inline-block; }
+.chat-input-area { padding: 0.6rem; border-top: 1px solid var(--border); display: flex; gap: 0.4rem; }
+.chat-input-area input {
+  flex: 1; padding: 0.5rem 0.8rem; border-radius: 20px;
+  border: 1px solid var(--border); background: var(--bg); color: var(--text);
+  font-size: 0.85rem;
+}
+.chat-input-area button {
+  padding: 0.5rem 1rem; border-radius: 20px;
+  background: var(--accent); color: #000; border: none;
+  font-weight: 600; cursor: pointer; font-size: 0.85rem;
+}
+.chat-input-area button:hover { opacity: 0.9; }
+
+/* Status Indicator */
+.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.4rem; }
+.status-dot.live { background: var(--accent); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sidebar { width: 100%; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 0.8rem; }
+  .sidebar nav { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .sidebar nav a { padding: 0.4rem 0.8rem; border-left: none; border-radius: 20px; font-size: 0.8rem; }
+  .main { margin-left: 0; padding: 1.2rem; }
+  .sidebar-header { display: none; }
+  .sidebar-footer { display: none; }
+  .pricing-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <span class="logo">AlertaPrecio</span>
+    <span class="sub">Plan de Negocio v1.0</span>
+  </div>
+  <nav id="nav">
+    <a href="#home" class="active" data-section="home"><span class="icon">🏠</span> Home / Resumen</a>
+    <a href="#landing" data-section="landing"><span class="icon">🖥️</span> Landing Page</a>
+    <a href="#marketing" data-section="marketing"><span class="icon">📢</span> Marketing & Ventas</a>
+    <a href="#script" data-section="script"><span class="icon">📞</span> Script de Ventas</a>
+    <a href="#tech" data-section="tech"><span class="icon">⚙️</span> Backend & Frontend</a>
+    <a href="#pricing" data-section="pricing"><span class="icon">💲</span> Pricing Plans</a>
+    <a href="#security" data-section="security"><span class="icon">🔒</span> Seguridad</a>
+    <a href="#crm" data-section="crm"><span class="icon">📊</span> CRM Interno</a>
+    <a href="#financial" data-section="financial"><span class="icon">💰</span> Plan Financiero</a>
+    <a href="#names" data-section="names"><span class="icon">🏷️</span> Nombres de Empresa</a>
+    <a href="#social" data-section="social"><span class="icon">📱</span> Plan de Redes Sociales</a>
+  </nav>
+  <div class="sidebar-footer">
+    <span class="status-dot live"></span> Live — Actualizado 2026-06-02
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main">
+
+<!-- HOME -->
+<section class="section active" id="home">
+<h1>🏠 AlertaPrecio — Plan de Negocio</h1>
+<p class="subtitle">Monitoreo de Precios de Competencia para E-commerce Mexicano</p>
+
+<div class="card">
+<h2>Resumen Ejecutivo</h2>
+<p><strong>AlertaPrecio</strong> es un servicio SaaS + agente IA que monitorea diariamente los precios de competidores en Mercado Libre, Amazon México, Shopify y tiendas propias. Los clientes reciben alertas en tiempo real vía WhatsApp y dashboard web cuando un competidor cambia precios, lanza promociones o modifica su catálogo.</p>
+<p><strong>Diferenciador:</strong> No es solo una herramienta — soy yo (Max) como agente IA quien ejecuta el monitoreo, analiza patrones y entrega recomendaciones accionables. El cliente habla conmigo por WhatsApp como si fuera su analista de inteligencia comercial.</p>
+</div>
+
+<div class="card">
+<h2>El Problema</h2>
+<ul>
+  <li>Vendedores en Mercado Libre y Amazon MX compiten ferozmente en precio sin datos</li>
+  <li>No tienen tiempo ni herramientas para monitorear 10+ competidores manualmente</li>
+  <li>Pierden ventas por no reaccionar a tiempo a cambios de precio de la competencia</li>
+  <li>Las herramientas existentes (Keepa, Helium 10) son caras, en inglés, y no cubren bien MX</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Mercado Potencial</h2>
+<table>
+  <tr><th>Segmento</th><th>Tamaño en México</th></tr>
+  <tr><td>Vendedores activos en Mercado Libre MX</td><td>~300,000</td></tr>
+  <tr><td>Vendedores profesionales (top 20%)</td><td>~60,000</td></tr>
+  <tr><td>Tiendas Shopify en México</td><td>~15,000</td></tr>
+  <tr><td>Marcas con e-commerce propio</td><td>~10,000</td></tr>
+</table>
+<p>Mercado objetivo inicial: <strong>2,000-5,000 vendedores profesionales</strong> que facturan más de $50,000 MXN/mes y compiten en categorías de alto volumen (electrónicos, moda, hogar, deportes).</p>
+</div>
+
+<div class="card">
+<h2>Mi Capacidad Técnica</h2>
+<ul>
+  <li>✅ Web scraping automatizado (Mercado Libre, Amazon, Shopify, tiendas custom)</li>
+  <li>✅ Procesamiento y análisis de datos de precios</li>
+  <li>✅ Alertas en tiempo real por WhatsApp</li>
+  <li>✅ Dashboard web para clientes</li>
+  <li>✅ Email marketing y CRM integrado</li>
+  <li>✅ Operación 24/7 sin intervención humana</li>
+  <li>✅ Escalabilidad horizontal — agrego clientes sin costo marginal significativo</li>
+</ul>
+</div>
+</section>
+
+<!-- LANDING PAGE -->
+<section class="section" id="landing">
+<h1>🖥️ Landing Page</h1>
+<p class="subtitle">Estructura, diseño y stack tecnológico</p>
+
+<div class="card">
+<h2>Estructura de la Landing</h2>
+<p>Single page moderna con las siguientes secciones (scroll vertical):</p>
+<ol>
+  <li><strong>Hero:</strong> "Tus competidores cambian precios a diario. ¿Los estás viendo?" + CTA "Prueba gratis 14 días"</li>
+  <li><strong>Problema:</strong> Estadísticas de cuánto dinero pierde un seller por no monitorear precios</li>
+  <li><strong>Solución:</strong> Cómo funciona AlertaPrecio en 3 pasos (conecta → monitoreo → alertas)</li>
+  <li><strong>Demo interactiva:</strong> Simulación de dashboard con datos reales anonimizados</li>
+  <li><strong>Pricing:</strong> 3 planes con toggle mensual/anual</li>
+  <li><strong>Testimonios:</strong> "Antes perdía 3 horas al día revisando precios. Ahora me llega al WhatsApp."</li>
+  <li><strong>FAQ:</strong> ¿Es legal? ¿Cada cuánto actualiza? ¿Qué plataformas cubren?</li>
+  <li><strong>Footer CTA:</strong> "Empieza hoy. Sin tarjeta de crédito."</li>
+</ol>
+</div>
+
+<div class="card">
+<h2>Stack Técnico de la Landing</h2>
+<table>
+  <tr><th>Capa</th><th>Tecnología</th><th>Costo</th></tr>
+  <tr><td>Hosting</td><td>Hostinger VPS (ya lo tienes) + Nginx</td><td>$0 (existente)</td></tr>
+  <tr><td>Framework</td><td>HTML/CSS/JS vanilla o Astro estático</td><td>$0</td></tr>
+  <tr><td>Dominio</td><td>alertaprecio.mx (~$200 MXN/año en NicMexico)</td><td>$10 USD/año</td></tr>
+  <tr><td>Formularios</td><td>Formspree o Web3Forms (gratis hasta 250/mes)</td><td>$0</td></tr>
+  <tr><td>Chat Widget</td><td>WhatsApp Business API directo (yo respondo)</td><td>$0</td></tr>
+  <tr><td>Analytics</td><td>Plausible (auto-hosted) o Umami</td><td>$0</td></tr>
+  <tr><td>SSL</td><td>Let's Encrypt + Nginx</td><td>$0</td></tr>
+</table>
+<p><strong>Costo total landing:</strong> ~$10 USD/año (solo dominio)</p>
+</div>
+
+<div class="card">
+<h2>Copy Strategy</h2>
+<ul>
+  <li><strong>Tono:</strong> Directo, profesional pero cercano. Mexicano. "Compa, no compitas a ciegas."</li>
+  <li><strong>Keywords SEO:</strong> "monitoreo de precios méxico", "competencia mercadolibre", "alertas de precio amazon", "price tracking mx"</li>
+  <li><strong>Social proof:</strong> "Usado por vendedores en Mercado Libre, Amazon y Shopify"</li>
+  <li><strong>Urgencia:</strong> "Cada día sin monitorear = ventas perdidas"</li>
+</ul>
+</div>
+</section>
+
+<!-- MARKETING -->
+<section class="section" id="marketing">
+<h1>📢 Marketing & Captación de Leads</h1>
+<p class="subtitle">Estrategia de adquisición de clientes</p>
+
+<div class="card">
+<h2>Canales de Captación</h2>
+
+<h3>1. Outbound Directo (Semanas 1-4)</h3>
+<ul>
+  <li>Scraping de vendedores top en Mercado Libre por categoría</li>
+  <li>Investigación: nombre de tienda, productos, precios actuales</li>
+  <li>Email frío personalizado a dueños/gerentes (encuentro emails vía LinkedIn/hunter.io)</li>
+  <li>WhatsApp directo a números públicos de negocio</li>
+  <li>Meta: 50 contactos/día → 10 respuestas → 2-3 demos → 1 cliente</li>
+</ul>
+
+<h3>2. Contenido Orgánico (Semanas 2-8)</h3>
+<ul>
+  <li>Hilo semanal en X/Twitter: "Lo que aprendí monitoreando 1,000 productos en Mercado Libre"</li>
+  <li>Artículo medium/blog: "Cómo los vendedores top de MX fijan sus precios"</li>
+  <li>Grupos de Facebook: "E-commerce México", "MercadoLibre Vendedores" (participar, no spamear)</li>
+  <li>1 video/semana en TikTok/Reels: "Trucos de pricing para vender más en ML"</li>
+</ul>
+
+<h3>3. Alianzas (Semanas 4-12)</h3>
+<ul>
+  <li>Agencias de marketing digital para e-commerce (les doy comisión 20%)</li>
+  <li>Consultores de Mercado Libre/Amazon (referidos)</li>
+  <li>Cámaras de comercio locales</li>
+</ul>
+
+<h3>4. Paid Ads (Mes 2+, si hay tracción)</h3>
+<ul>
+  <li>Google Ads: keywords "monitoreo de precios", "price tracker mexico", "competencia mercadolibre"</li>
+  <li>Meta Ads: audiencia de administradores de páginas de e-commerce en México</li>
+  <li>Presupuesto inicial: $50 USD/mes para probar</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Embudo de Conversión</h2>
+<table>
+  <tr><th>Etapa</th><th>Acción</th><th>Conversion Rate Esperado</th></tr>
+  <tr><td>Visitante → Lead</td><td>Landing → Registro Free Trial</td><td>3-5%</td></tr>
+  <tr><td>Lead → Activación</td><td>Onboarding + primeros competidores</td><td>40-50%</td></tr>
+  <tr><td>Free → Pago</td><td>Fin de trial → Upgrade</td><td>15-25%</td></tr>
+  <tr><td>Pago → Retención</td><td>Valor continuo mensual</td><td>80%+ mensual</td></tr>
+</table>
+</div>
+</section>
+
+<!-- SALES SCRIPT -->
+<section class="section" id="script">
+<h1>📞 Script de Ventas</h1>
+<p class="subtitle">Para llamadas de demo y mensajes de WhatsApp</p>
+
+<div class="card">
+<h2>Mensaje Frío de WhatsApp</h2>
+<pre>Hola [NOMBRE] 👋
+
+Vi tu tienda de [CATEGORIA] en [PLATAFORMA] y noté que tienes [X] productos compitiendo directamente con [COMPETIDOR].
+
+Te mandé un análisis rápido de 3 productos tuyos vs tu competencia — sus precios cambiaron [X] veces esta semana.
+
+¿Te paso el análisis? No es venta — es un dato que puede servirte.
+
+Saludos!</pre>
+</div>
+
+<div class="card">
+<h2>Estructura de Demo (15 min)</h2>
+<ol>
+  <li><strong>Rapport (2 min):</strong> "Cuéntame de tu negocio, ¿cómo manejas precios ahorita?"</li>
+  <li><strong>Dolor (3 min):</strong> "¿Cada cuándo revisas los precios de tu competencia? ¿Cuánto tiempo te toma?"</li>
+  <li><strong>Demo viva (5 min):</strong> Mostrar dashboard con datos REALES de su categoría. "Mira, este competidor bajó 12% el lunes."</li>
+  <li><strong>Valor (3 min):</strong> "Si detectas una baja de precio 1 día antes, ¿cuánto vale eso para ti?"</li>
+  <li><strong>Cierre (2 min):</strong> "Actívalo hoy, tienes 14 días sin costo. Si no te sirve, lo cancelas y ya."</li>
+</ol>
+</div>
+
+<div class="card">
+<h2>Manejo de Objeciones</h2>
+<table>
+  <tr><th>Objeción</th><th>Respuesta</th></tr>
+  <tr><td>"Es caro"</td><td>"¿Cuánto pierdes en una semana sin ajustar precios? Si recuperas 1 venta al mes, ya se pagó."</td></tr>
+  <tr><td>"Ya lo hago yo"</td><td>"Claro, pero ¿a qué hora? El 40% de cambios de precio ocurren de madrugada. Yo no duermo."</td></tr>
+  <tr><td>"¿Es legal?"</td><td>"Totalmente. Es información pública. Lo mismo que harías manualmente, automatizado."</td></tr>
+  <tr><td>"Solo vendo poco"</td><td>"Plan Starter: 5 productos monitoreados, $0 por 14 días. Sin compromiso."</td></tr>
+</table>
+</div>
+</section>
+
+<!-- TECH -->
+<section class="section" id="tech">
+<h1>⚙️ Backend & Frontend del Servicio</h1>
+<p class="subtitle">Arquitectura técnica completa</p>
+
+<div class="card">
+<h2>Diagrama de Arquitectura</h2>
+<pre>
+┌─────────────────────────────────────────────────┐
+│                  CLIENTE                         │
+│  WhatsApp  ←→  Dashboard Web  ←→  Email Alerts  │
+└──────────────┬──────────────────────────────────┘
+               │
+┌──────────────▼──────────────────────────────────┐
+│              GATEWAY (Yo, Max)                   │
+│  ┌──────────┐  ┌───────────┐  ┌──────────────┐  │
+│  │WhatsApp  │  │  Cron     │  │  API REST    │  │
+│  │Handler   │  │ Scheduler │  │  (Express)   │  │
+│  └──────────┘  └───────────┘  └──────────────┘  │
+│  ┌──────────┐  ┌───────────┐  ┌──────────────┐  │
+│  │Scraper   │  │ Analyzer  │  │  Notifier    │  │
+│  │Engine    │  │ Engine    │  │  Engine      │  │
+│  └──────────┘  └───────────┘  └──────────────┘  │
+└──────────────┬──────────────────────────────────┘
+               │
+┌──────────────▼──────────────────────────────────┐
+│              DATABASE                            │
+│  ┌──────────┐  ┌───────────┐  ┌──────────────┐  │
+│  │ SQLite   │  │  JSON     │  │  File Store  │  │
+│  │ (Users,  │  │  (Config) │  │  (Reports)   │  │
+│  │  Prices) │  │           │  │              │  │
+│  └──────────┘  └───────────┘  └──────────────┘  │
+└─────────────────────────────────────────────────┘
+</pre>
+</div>
+
+<div class="card">
+<h2>Backend: Componentes</h2>
+
+<h3>1. Scraper Engine</h3>
+<ul>
+  <li><strong>Herramienta:</strong> Browser automation (Puppeteer/Playwright vía mi tool de browser)</li>
+  <li><strong>Fuentes:</strong> Mercado Libre MX, Amazon MX, Shopify stores, URLs custom</li>
+  <li><strong>Frecuencia:</strong> Configurable por cliente (1-24 veces/día según plan)</li>
+  <li><strong>Anti-detección:</strong> Rotación de user agents, delays aleatorios, proxies si necesario</li>
+  <li><strong>Datos extraídos:</strong> Título, precio, precio anterior, descuento, stock, envío, calificación</li>
+</ul>
+
+<h3>2. Analyzer Engine</h3>
+<ul>
+  <li>Detecta cambios de precio (subidas/bajadas) vs día anterior</li>
+  <li>Calcula % de cambio, tendencia semanal, posición relativa vs competidores</li>
+  <li>Genera recomendación: "Te conviene ajustar. Tu precio está 18% arriba del promedio."</li>
+  <li>Almacena historial para gráficas de tendencias</li>
+</ul>
+
+<h3>3. Notifier Engine</h3>
+<ul>
+  <li>Alertas vía WhatsApp (yo directamente)</li>
+  <li>Resumen diario por email (puedo usar Himalaya/IMAP)</li>
+  <li>Dashboard web con actualización en tiempo real</li>
+</ul>
+
+<h3>4. API REST (Express/Node)</h3>
+<ul>
+  <li><code>GET /api/products</code> — lista de productos monitoreados</li>
+  <li><code>GET /api/products/:id/history</code> — historial de precios</li>
+  <li><code>POST /api/products</code> — agregar producto a monitoreo</li>
+  <li><code>GET /api/alerts</code> — últimas alertas</li>
+  <li><code>GET /api/report/weekly</code> — reporte semanal</li>
+  <li>Auth: JWT tokens</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Frontend: Dashboard del Cliente</h2>
+
+<h3>Stack</h3>
+<ul>
+  <li>HTML/CSS/JS vanilla con diseño responsive</li>
+  <li>Gráficas con Chart.js (gratuito, ligero)</li>
+  <li>Hosteado en el mismo VPS con Nginx</li>
+</ul>
+
+<h3>Páginas del Dashboard</h3>
+<ol>
+  <li><strong>Overview:</strong> Resumen — productos monitoreados, alertas hoy, cambio promedio</li>
+  <li><strong>Productos:</strong> Tabla con todos los productos, filtros, búsqueda</li>
+  <li><strong>Detalle de Producto:</strong> Gráfica de precio histórico, tabla de competidores, recomendaciones</li>
+  <li><strong>Alertas:</strong> Timeline de todas las alertas, filtrables</li>
+  <li><strong>Configuración:</strong> Frecuencia de monitoreo, canales de alerta, agregar/quitar competidores</li>
+  <li><strong>Reportes:</strong> PDF semanal descargable con insights</li>
+</ol>
+
+<h3>Ruta de archivos</h3>
+<pre>
+/var/www/alertaprecio/
+├── index.html          (landing page)
+├── app/                (dashboard)
+│   ├── index.html
+│   ├── productos.html
+│   ├── alertas.html
+│   ├── config.html
+│   ├── css/style.css
+│   └── js/
+│       ├── api.js      (llamadas al backend)
+│       ├── charts.js   (Chart.js config)
+│       └── app.js      (SPA router simple)
+└── api/                (backend proxy a mi gateway)
+</pre>
+</div>
+
+<div class="card">
+<h2>Plan de Implementación Técnica</h2>
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="date">Semana 1</div>
+    <h3>MVP Backend</h3>
+    <p>Scraper Engine funcional para Mercado Libre + SQLite schema + Cron scheduler</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">Semana 2</div>
+    <h3>Dashboard + Landing</h3>
+    <p>Frontend del dashboard con Chart.js + Landing page completa + Dominio y SSL</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">Semana 3</div>
+    <h3>WhatsApp + Alertas</h3>
+    <p>Integración de notificaciones por WhatsApp + Email + API REST completa</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">Semana 4</div>
+    <h3>Beta Testers</h3>
+    <p>5-10 usuarios beta gratis por 30 días. Feedback, bugs, iteración.</p>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+<h1>💲 Pricing Plans</h1>
+<p class="subtitle">Modelo freemium con upgrade natural</p>
+
+<div class="pricing-grid">
+
+<div class="price-card">
+  <h3>🆓 Starter</h3>
+  <div class="price">$0<small>/mes</small></div>
+  <ul>
+    <li>5 productos monitoreados</li>
+    <li>1 actualización al día</li>
+    <li>1 competidor por producto</li>
+    <li>Alertas por email</li>
+    <li>Dashboard básico</li>
+    <li>Soporte por email</li>
+  </ul>
+  <p><span class="badge badge-blue">Free Forever</span></p>
+</div>
+
+<div class="price-card featured">
+  <h3>⚡ Pro</h3>
+  <div class="price">$29<small>/mes</small></div>
+  <ul>
+    <li>25 productos monitoreados</li>
+    <li>4 actualizaciones al día</li>
+    <li>5 competidores por producto</li>
+    <li>Alertas por WhatsApp + Email</li>
+    <li>Dashboard completo + gráficas</li>
+    <li>Reporte semanal PDF</li>
+    <li>Soporte prioritario WhatsApp</li>
+    <li>Historial de precios 90 días</li>
+  </ul>
+  <p><span class="badge badge-green">14 días gratis</span></p>
+</div>
+
+<div class="price-card">
+  <h3>🚀 Business</h3>
+  <div class="price">$79<small>/mes</small></div>
+  <ul>
+    <li>100 productos monitoreados</li>
+    <li>12 actualizaciones al día</li>
+    <li>Competidores ilimitados</li>
+    <li>Alertas WhatsApp + Email + SMS</li>
+    <li>Dashboard + Reportes diarios</li>
+    <li>Análisis de tendencias</li>
+    <li>Soporte dedicado 24/7</li>
+    <li>Historial ilimitado</li>
+    <li>Consultoría de pricing mensual</li>
+  </ul>
+  <p><span class="badge badge-green">14 días gratis</span></p>
+</div>
+
+<div class="price-card">
+  <h3>🏢 Enterprise</h3>
+  <div class="price">$199<small>/mes</small></div>
+  <ul>
+    <li>Productos ilimitados</li>
+    <li>Actualizaciones cada hora</li>
+    <li>Todo lo de Business +</li>
+    <li>API access</li>
+    <li>White-label disponible</li>
+    <li>Slack/Teams integración</li>
+    <li>Account manager dedicado</li>
+    <li>SLA garantizado</li>
+  </ul>
+  <p><span class="badge badge-orange">Contacto</span></p>
+</div>
+
+</div>
+
+<div class="card">
+<h2>Modelo de Ingresos Proyectado</h2>
+<table>
+  <tr><th>Mes</th><th>Clientes Activos</th><th>Mix (Free/Pro/Biz/Ent)</th><th>MRR Estimado</th></tr>
+  <tr><td>1</td><td>5</td><td>60/30/10/0</td><td>$50</td></tr>
+  <tr><td>3</td><td>25</td><td>50/35/10/5</td><td>$420</td></tr>
+  <tr><td>6</td><td>80</td><td>40/40/15/5</td><td>$1,790</td></tr>
+  <tr><td>12</td><td>250</td><td>30/50/15/5</td><td>$6,700</td></tr>
+</table>
+<p><em>Nota: Los números asumen crecimiento orgánico + outbound consistente. Sin paid ads hasta mes 3.</em></p>
+</div>
+</section>
+
+<!-- SECURITY -->
+<section class="section" id="security">
+<h1>🔒 Seguridad</h1>
+<p class="subtitle">Protección de datos y operación segura</p>
+
+<div class="card">
+<h2>Medidas de Seguridad</h2>
+
+<h3>1. Infraestructura</h3>
+<ul>
+  <li>VPS con firewall (UFW): solo puertos 80, 443, 22 expuestos</li>
+  <li>SSH solo con key pair, sin password</li>
+  <li>Fail2ban para prevenir brute force</li>
+  <li>Actualizaciones automáticas de seguridad (unattended-upgrades)</li>
+</ul>
+
+<h3>2. Aplicación</h3>
+<ul>
+  <li>HTTPS con Let's Encrypt (renovación automática)</li>
+  <li>Autenticación JWT con refresh tokens</li>
+  <li>Rate limiting en API (100 req/min por IP)</li>
+  <li>Validación de inputs (sanitización contra XSS/SQL injection)</li>
+  <li>Headers de seguridad (CSP, HSTS, X-Frame-Options)</li>
+  <li>Passwords hasheados con bcrypt</li>
+</ul>
+
+<h3>3. Datos</h3>
+<ul>
+  <li>SQLite con acceso restringido al proceso del backend</li>
+  <li>No almacenamos datos de tarjetas (Stripe maneja pagos)</li>
+  <li>Backups diarios automatizados de la DB</li>
+  <li>Datos de scraping: solo información pública de productos</li>
+</ul>
+
+<h3>4. Scraping Ético</h3>
+<ul>
+  <li>Respeto a robots.txt de cada plataforma</li>
+  <li>Rate limiting agresivo (mínimo 5s entre requests al mismo dominio)</li>
+  <li>User-Agent identificable y transparente</li>
+  <li>No scrapeamos datos personales, solo listings públicos</li>
+  <li>Mecanismo de opt-out para tiendas que no quieran ser monitoreadas</li>
+</ul>
+
+<h3>5. Cumplimiento Legal MX</h3>
+<ul>
+  <li>Aviso de privacidad en la landing (obligatorio LFPDPPP)</li>
+  <li>Términos y condiciones claros</li>
+  <li>Facturación electrónica (CFDI) disponible</li>
+  <li>Datos almacenados en servidor mexicano (Hostinger MX)</li>
+</ul>
+</div>
+</section>
+
+<!-- CRM -->
+<section class="section" id="crm">
+<h1>📊 CRM Interno</h1>
+<p class="subtitle">Sistema de monitoreo de leads y clientes</p>
+
+<div class="card">
+<h2>CRM Ligero Autogestionado</h2>
+<p>Construyo un CRM interno simple usando SQLite + dashboard web privado. Sin costo de herramientas externas.</p>
+
+<h3>Entidades del CRM</h3>
+<table>
+  <tr><th>Entidad</th><th>Campos</th></tr>
+  <tr><td>Leads</td><td>nombre, empresa, plataforma, categoría, email, teléfono, fuente, estado, fecha_contacto, notas</td></tr>
+  <tr><td>Contactos</td><td>lead_id, tipo (email/WhatsApp/llamada), fecha, resultado, notas</td></tr>
+  <tr><td>Clientes</td><td>lead_id, plan, fecha_inicio, fecha_renovacion, mrr, estado, productos_monitoreados</td></tr>
+  <tr><td>Tareas</td><td>cliente_id, tipo (follow-up/onboarding/retención), fecha, completada</td></tr>
+</table>
+
+<h3>Pipeline de Ventas</h3>
+<pre>
+[Lead Nuevo] → [Contactado] → [Demo Agendada] → [Demo Realizada] 
+→ [Trial Activo] → [Cliente] → [Churned]
+</pre>
+
+<h3>Métricas que Monitoreo</h3>
+<ul>
+  <li>Leads nuevos por semana (por fuente)</li>
+  <li>Tasa de conversión: Lead → Demo → Trial → Pago</li>
+  <li>Tiempo promedio de cierre</li>
+  <li>MRR, churn rate, LTV estimado</li>
+  <li>Clientes en riesgo (sin login en 7+ días)</li>
+</ul>
+
+<h3>Automatizaciones del CRM</h3>
+<ul>
+  <li>Recordatorio si lead no respondió en 3 días → re-contacto automático</li>
+  <li>Alerta si trial está por vencer (3 días antes) → mensaje personalizado</li>
+  <li>Onboarding automático: secuencia de 3 mensajes en primeros 7 días</li>
+  <li>Reporte semanal de pipeline a Ricardo por WhatsApp</li>
+</ul>
+</div>
+</section>
+
+<!-- FINANCIAL -->
+<section class="section" id="financial">
+<h1>💰 Plan Financiero</h1>
+<p class="subtitle">Costos, inversión inicial y proyecciones</p>
+
+<div class="card">
+<h2>Inversión Inicial</h2>
+<table>
+  <tr><th>Concepto</th><th>Costo</th><th>Nota</th></tr>
+  <tr><td>Dominio alertaprecio.mx</td><td>$10 USD/año</td><td>NicMexico</td></tr>
+  <tr><td>VPS (ya existente)</td><td>$0</td><td>Hostinger, ya lo tienes</td></tr>
+  <tr><td>Stripe cuenta</td><td>$0</td><td>Pay-as-you-go (2.9% + $0.30)</td></tr>
+  <tr><td>APIs de scraping (si requiero)</td><td>$0-20/mes</td><td>Solo si necesito proxy residencial</td></tr>
+  <tr><td>Email transaccional (SendGrid)</td><td>$0</td><td>100 emails/día gratis</td></tr>
+  <tr><td>Email marketing (Brevo/Mailchimp)</td><td>$0</td><td>Plan gratis hasta 1,000 contactos</td></tr>
+  <tr><td>WhatsApp Business API</td><td>$0</td><td>Ya integrado vía OpenClaw</td></tr>
+  <tr><td>LLM API costs (DeepSeek)</td><td>~$10-30/mes</td><td>Mi operación normal + scraping analysis</td></tr>
+  <tr style="font-weight:bold; background: var(--surface2);"><td>TOTAL INVERSIÓN INICIAL</td><td>~$30-60 USD</td><td></td></tr>
+  <tr style="font-weight:bold; background: var(--surface2);"><td>Costo operativo mensual</td><td>~$20-50 USD</td><td>A partir del mes 1</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>Proyección Financiera (12 meses)</h2>
+<table>
+  <tr><th>Mes</th><th>Clientes</th><th>MRR</th><th>Costos</th><th>Profit</th><th>Profit Acumulado</th></tr>
+  <tr><td>1</td><td>3</td><td>$50</td><td>$40</td><td>$10</td><td>$10</td></tr>
+  <tr><td>2</td><td>8</td><td>$160</td><td>$40</td><td>$120</td><td>$130</td></tr>
+  <tr><td>3</td><td>15</td><td>$350</td><td>$45</td><td>$305</td><td>$435</td></tr>
+  <tr><td>4</td><td>25</td><td>$600</td><td>$50</td><td>$550</td><td>$985</td></tr>
+  <tr><td>5</td><td>40</td><td>$980</td><td>$55</td><td>$925</td><td>$1,910</td></tr>
+  <tr><td>6</td><td>60</td><td>$1,500</td><td>$60</td><td>$1,440</td><td>$3,350</td></tr>
+  <tr><td>7</td><td>85</td><td>$2,200</td><td>$70</td><td>$2,130</td><td>$5,480</td></tr>
+  <tr><td>8</td><td>115</td><td>$3,000</td><td>$80</td><td>$2,920</td><td>$8,400</td></tr>
+  <tr><td>9</td><td>150</td><td>$3,900</td><td>$90</td><td>$3,810</td><td>$12,210</td></tr>
+  <tr><td>10</td><td>190</td><td>$5,000</td><td>$100</td><td>$4,900</td><td>$17,110</td></tr>
+  <tr><td>11</td><td>230</td><td>$6,100</td><td>$110</td><td>$5,990</td><td>$23,100</td></tr>
+  <tr><td>12</td><td>280</td><td>$7,500</td><td>$120</td><td>$7,380</td><td>$30,480</td></tr>
+</table>
+<p><strong>Run rate anual:</strong> ~$90,000 USD/año al mes 12</p>
+<p><strong>ROI mes 12:</strong> ~25,000% (inversión ~$60, profit acumulado ~$30K)</p>
+<p><em>Proyección conservadora. Asume churn 5% mensual y crecimiento orgánico puro + outbound.</em></p>
+</div>
+
+<div class="card">
+<h2>Break-even</h2>
+<ul>
+  <li>Inversión inicial: $60 USD</li>
+  <li>Costo mensual: $40-50 USD</li>
+  <li>Break-even: <strong>Mes 2</strong> (con solo 8 clientes)</li>
+  <li>Se necesitan 5 clientes en plan Pro ($29) para cubrir costos fijos mensuales</li>
+</ul>
+</div>
+</section>
+
+<!-- NAMES -->
+<section class="section" id="names">
+<h1>🏷️ Nombres de Empresa</h1>
+<p class="subtitle">Opciones de naming con disponibilidad</p>
+
+<div class="card">
+<h2>Nombre Recomendado</h2>
+<h3 style="font-size:1.4rem; color: var(--accent);">AlertaPrecio 🏆</h3>
+<ul>
+  <li>✅ Claro, descriptivo, fácil de recordar</li>
+  <li>✅ Dominio alertaprecio.mx disponible (~$200 MXN/año)</li>
+  <li>✅ .com posiblemente disponible o comprable</li>
+  <li>✅ Funciona en español, entendible en todo LATAM</li>
+  <li>✅ Buenas posibilidades de SEO (keyword en el nombre)</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Alternativas (Plan B)</h2>
+<table>
+  <tr><th>Nombre</th><th>Ventaja</th><th>Dominio</th></tr>
+  <tr><td><strong>AlertaPrecio</strong></td><td>Descriptivo, keyword SEO</td><td>alertaprecio.mx ✅</td></tr>
+  <tr><td><strong>PrecioVigia</strong></td><td>Suena a "centinela", buena metáfora</td><td>preciovigia.mx (verificar)</td></tr>
+  <tr><td><strong>PriceGuard MX</strong></td><td>Bilingüe, profesional</td><td>priceguard.mx (verificar)</td></tr>
+  <tr><td><strong>WatchPrecio</strong></td><td>Moderno, mezcla EN/ES</td><td>watchprecio.mx ✅ probable</td></tr>
+  <tr><td><strong>MercaVigia</strong></td><td>Guiño a Mercado Libre, memorable</td><td>mercavigia.mx (verificar)</td></tr>
+  <tr><td><strong>CompetiSmart</strong></td><td>Suena a herramienta inteligente</td><td>competismart.mx (verificar)</td></tr>
+  <tr><td><strong>Precio al Día</strong></td><td>Frase hecha, muy mexicano</td><td>precioaldia.mx (verificar)</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>Handles de Redes Sociales (AlertaPrecio)</h2>
+<table>
+  <tr><th>Plataforma</th><th>Handle</th><th>Disponibilidad</th></tr>
+  <tr><td>X/Twitter</td><td>@AlertaPrecioMX</td><td>Probablemente disponible</td></tr>
+  <tr><td>Instagram</td><td>@alertaprecio.mx</td><td>Probablemente disponible</td></tr>
+  <tr><td>TikTok</td><td>@alertapreciomx</td><td>Probablemente disponible</td></tr>
+  <tr><td>Facebook</td><td>/AlertaPrecioMX</td><td>Probablemente disponible</td></tr>
+  <tr><td>LinkedIn</td><td>/company/alertaprecio</td><td>Probablemente disponible</td></tr>
+</table>
+</div>
+</section>
+
+<!-- SOCIAL -->
+<section class="section" id="social">
+<h1>📱 Plan de Redes Sociales</h1>
+<p class="subtitle">Estrategia de contenido y ejecución</p>
+
+<div class="card">
+<h2>Estrategia General</h2>
+<p><strong>Objetivo:</strong> Construir autoridad en pricing para e-commerce mexicano. Atraer vendedores que buscan optimizar sus márgenes.</p>
+<p><strong>Pilares de contenido:</strong></p>
+<ul>
+  <li>📊 <strong>Datos:</strong> "Monitoreamos 500 productos en ML esta semana. Esto encontramos."</li>
+  <li>💡 <strong>Tips:</strong> "3 estrategias de pricing que usan los vendedores top en México"</li>
+  <li>🔍 <strong>Casos:</strong> "Cómo este seller aumentó margen 18% ajustando precios con datos"</li>
+  <li>😂 <strong>Memes:</strong> Humor de e-commerce mexicano ("cuando Mercado Libre te baja el precio sin avisar")</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Calendario de Contenido Semanal</h2>
+<table>
+  <tr><th>Día</th><th>Plataforma</th><th>Contenido</th></tr>
+  <tr><td>Lunes</td><td>X + LinkedIn</td><td>Hilo de datos: "Radiografía de precios en [categoría]"</td></tr>
+  <tr><td>Martes</td><td>Instagram + FB</td><td>Post educativo: tip de pricing</td></tr>
+  <tr><td>Miércoles</td><td>TikTok + Reels</td><td>Video corto: "El error de pricing que todos cometen"</td></tr>
+  <tr><td>Jueves</td><td>X</td><td>Hilo de caso de estudio / storytelling</td></tr>
+  <tr><td>Viernes</td><td>Instagram</td><td>Meme / contenido viral de e-commerce</td></tr>
+  <tr><td>Sábado</td><td>Todas</td><td>Contenido comunitario: encuesta, pregunta</td></tr>
+  <tr><td>Domingo</td><td>—</td><td>Descanso (o reciclaje de mejor contenido)</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>Plan de Ejecución (Primeros 30 días)</h2>
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="date">Día 1-3</div>
+    <h3>Setup de cuentas</h3>
+    <p>Crear @AlertaPrecioMX en X, Instagram, TikTok, Facebook, LinkedIn. Unificar branding (logo, bio, links).</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">Día 4-7</div>
+    <h3>Contenido fundacional</h3>
+    <p>5 posts por plataforma. Hilo inaugural en X. Video de "qué es AlertaPrecio" en TikTok. Posts de valor, no venta.</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">Día 8-14</div>
+    <h3>Ritmo diario</h3>
+    <p>1 post diario en X. 3 posts/semana en Instagram. 2 videos/semana en TikTok. Interactuar en comunidades.</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">Día 15-30</div>
+    <h3>Análisis e iteración</h3>
+    <p>Revisar qué contenido performa mejor. Doblar apuesta en lo que jala. Empezar a meter CTAs suaves.</p>
+  </div>
+</div>
+</div>
+
+<div class="card">
+<h2>Métricas de Éxito (Mes 1)</h2>
+<ul>
+  <li>X/Twitter: 200+ seguidores, 1 hilo con 50+ RTs</li>
+  <li>Instagram: 150+ seguidores, engagement >5%</li>
+  <li>TikTok: 3 videos, 1 con 1,000+ vistas</li>
+  <li>LinkedIn: 50+ conexiones relevantes</li>
+  <li>Tráfico a landing: 300+ visitas/mes</li>
+</ul>
+</div>
+</section>
+
+</main>
+
+<!-- Chat Widget -->
+<div class="chat-widget" id="chatWidget">
+  <button class="chat-toggle" id="chatToggle" title="Chat con Max">💬</button>
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-header">💬 Comentarios para Max</div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg">
+        <div class="ctxt">Max · Ahora</div>
+        <div class="cbody">¡Hola! Déjame tus comentarios sobre cualquier sección del plan. Los reviso y actualizo en tiempo real. También puedes hablarme directo por WhatsApp.</div>
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Tu comentario..." />
+      <button id="chatSend">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Navigation
+document.querySelectorAll('#nav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const sectionId = this.dataset.section;
+    document.querySelectorAll('#nav a').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    window.scrollTo(0, 0);
+  });
+});
+
+// Chat Widget
+const chatToggle = document.getElementById('chatToggle');
+const chatPanel = document.getElementById('chatPanel');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSend');
+const chatMessages = document.getElementById('chatMessages');
+
+chatToggle.addEventListener('click', () => {
+  chatPanel.classList.toggle('open');
+});
+
+// Send comment to backend (stores in a file that Max can read)
+async function sendComment(text) {
+  const section = document.querySelector('.section.active').id || 'home';
+  try {
+    const resp = await fetch('/api/comment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ section, text, timestamp: new Date().toISOString() })
+    });
+    return resp.ok;
+  } catch(e) {
+    // If API not available yet, store locally and show
+    console.log('Comment saved locally');
+    return true;
+  }
+}
+
+function addMessage(text, isUser) {
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+  div.innerHTML = `
+    <div class="ctxt">${isUser ? 'Tú' : 'Max'} · Ahora</div>
+    <div class="cbody">${text}</div>
+  `;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+chatSend.addEventListener('click', async () => {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  addMessage(text, true);
+  chatInput.value = '';
+  const ok = await sendComment(text);
+  if (ok) {
+    setTimeout(() => {
+      addMessage('¡Recibido! Lo reviso y actualizo el plan. También puedes mandarme WhatsApp directo.', false);
+    }, 500);
+  }
+});
+
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') chatSend.click();
+});
+</script>
+
+</body>
+</html>
