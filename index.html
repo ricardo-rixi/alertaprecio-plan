@@ -224,6 +224,7 @@ tr:hover td { background: var(--surface2); }
     <a href="#names" data-section="names"><span class="icon">🏷️</span> Nombres de Empresa</a>
     <a href="#social" data-section="social"><span class="icon">📱</span> Plan de Redes Sociales</a>
     <a href="#competencia" data-section="competencia"><span class="icon">⚔️</span> Vs. Competidores</a>
+    <a href="#milestones" data-section="milestones"><span class="icon">🏗️</span> Milestones — Desarrollo</a>
     <a href="#necesito" data-section="necesito"><span class="icon">📋</span> Cosas que necesito de ti</a>
   </nav>
   <div class="sidebar-footer">
@@ -1033,136 +1034,367 @@ Saludos!</pre>
 </div>
 </section>
 
+<!-- MILESTONES -->
+<section class="section" id="milestones">
+<h1>🏗️ Milestones — Plan de Desarrollo</h1>
+<p class="subtitle">Cada bloque requiere tu autorización antes de avanzar al siguiente</p>
+
+<div class="card">
+<h2>📐 Estructura del Desarrollo</h2>
+<p>El proyecto se divide en <strong>6 fases</strong>, cada una con bloques de trabajo concretos. Para avanzar de un bloque al siguiente, <strong>te pediré autorización</strong>. Así tú controlas el ritmo y validas cada entrega antes de seguir.</p>
+</div>
+
+<!-- FASE 0 -->
+<div class="card">
+<h2>🧱 FASE 0 — Fundación Técnica</h2>
+<p><span class="badge badge-blue">En progreso — sin bloqueos externos</span></p>
+
+<h3>Bloque 0.1 — Scaffolding del Proyecto</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-green">✅ Listo para empezar</span></td></tr>
+  <tr><th>Tareas</th><td>Crear estructura de directorios, inicializar repo privado del backend, configurar entorno de desarrollo, definir estándares de código</td></tr>
+  <tr><th>Entregable</th><td>Repositorio con estructura base, README con arquitectura, .env template</td></tr>
+  <tr><th>Tiempo estimado</th><td>1-2 horas</td></tr>
+  <tr><th>Depende de</th><td>Nada — puedo empezar YA</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 0.2 — Base de Datos</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 0.1</span></td></tr>
+  <tr><th>Tareas</th><td>Diseñar schema SQLite: users, products, competitors, price_history, alerts, subscriptions. Crear migraciones iniciales, seed data de prueba</td></tr>
+  <tr><th>Entregable</th><td>Base de datos funcional con tablas, índices y datos de prueba (50 productos, 10 competidores simulados)</td></tr>
+  <tr><th>Tiempo estimado</th><td>2-3 horas</td></tr>
+  <tr><th>Depende de</th><td>0.1 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 0.3 — Autenticación de Usuarios</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 0.2</span></td></tr>
+  <tr><th>Tareas</th><td>Sistema de registro/login con JWT, hash de passwords (bcrypt), recuperación de contraseña, sesiones. Middleware de autenticación para API</td></tr>
+  <tr><th>Entregable</th><td>API funcional: POST /auth/register, POST /auth/login, GET /auth/me. Frontend de login simple</td></tr>
+  <tr><th>Tiempo estimado</th><td>3-4 horas</td></tr>
+  <tr><th>Depende de</th><td>0.2 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+</div>
+
+<!-- FASE 1 -->
+<div class="card">
+<h2>🕷️ FASE 1 — Motor de Scraping</h2>
+<p><span class="badge badge-blue">El corazón del producto</span></p>
+
+<h3>Bloque 1.1 — Scraper Mercado Libre MX</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando Fase 0</span></td></tr>
+  <tr><th>Tareas</th><td>Browser automation para ML: buscar producto por URL/ID, extraer título, precio, precio anterior, descuento, stock, envío, calificación, seller. Manejo de rate limiting, rotación de user-agents, delays aleatorios. Sistema de reintentos con backoff exponencial</td></tr>
+  <tr><th>Entregable</th><td>Script funcional que scrapea 1 producto de ML MX y guarda en DB. 10 pruebas exitosas con distintos tipos de listing</td></tr>
+  <tr><th>Tiempo estimado</th><td>4-6 horas</td></tr>
+  <tr><th>Depende de</th><td>Fase 0 completa</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 1.2 — Scraper Amazon MX</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 1.1</span></td></tr>
+  <tr><th>Tareas</th><td>Scraper para Amazon MX: ASIN lookup, extracción de precio, list price, prime status, seller info. Manejo de captchas (evasión, no resolución)</td></tr>
+  <tr><th>Entregable</th><td>Script funcional para Amazon MX + 10 pruebas exitosas</td></tr>
+  <tr><th>Tiempo estimado</th><td>3-5 horas</td></tr>
+  <tr><th>Depende de</th><td>1.1 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 1.3 — Scraper Shopify / Tiendas Custom</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 1.2</span></td></tr>
+  <tr><th>Tareas</th><td>Scraper genérico para tiendas Shopify (products.json endpoint) y URLs custom con selectores CSS configurados por cliente</td></tr>
+  <tr><th>Entregable</th><td>Motor genérico + configuración de 3 tiendas de prueba</td></tr>
+  <tr><th>Tiempo estimado</th><td>2-3 horas</td></tr>
+  <tr><th>Depende de</th><td>1.2 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 1.4 — Cron Scheduler + Motor de Alertas</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 1.3</span></td></tr>
+  <tr><th>Tareas</th><td>Sistema de scheduling por cliente (cada X horas según plan). Detección de cambios de precio (subida/bajada/igual). Cálculo de % de cambio, tendencia semanal. Generación de alertas en DB. Endpoint GET /api/alerts</td></tr>
+  <tr><th>Entregable</th><td>Sistema corriendo con 20 productos monitoreados generando alertas reales cada 6 horas</td></tr>
+  <tr><th>Tiempo estimado</th><td>3-4 horas</td></tr>
+  <tr><th>Depende de</th><td>1.3 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+</div>
+
+<!-- FASE 2 -->
+<div class="card">
+<h2>🖥️ FASE 2 — Dashboard Web</h2>
+<p><span class="badge badge-blue">Lo que el cliente ve</span></p>
+
+<h3>Bloque 2.1 — Dashboard: Overview + Productos</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando Fase 1</span></td></tr>
+  <tr><th>Tareas</th><td>SPA con navegación: página de Overview (resumen, alertas hoy, KPIs) + página de Productos (tabla con filtros, búsqueda, estado de cada producto). Gráficas con Chart.js (historial de precios). Consumo de API real del backend</td></tr>
+  <tr><th>Entregable</th><td>Dashboard funcional con datos reales del scraper. Diseño responsive, tema oscuro</td></tr>
+  <tr><th>Tiempo estimado</th><td>5-7 horas</td></tr>
+  <tr><th>Depende de</th><td>Fase 1 completa</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 2.2 — Dashboard: Alertas + Configuración</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 2.1</span></td></tr>
+  <tr><th>Tareas</th><td>Timeline de alertas con filtros por producto/competidor/fecha. Página de Configuración: agregar/quitar productos, configurar frecuencia de monitoreo, canales de alerta preferidos. Onboarding wizard para primera configuración</td></tr>
+  <tr><th>Entregable</th><td>Dashboard completo con todas las páginas funcionales. Flujo de onboarding de 3 pasos</td></tr>
+  <tr><th>Tiempo estimado</th><td>4-5 horas</td></tr>
+  <tr><th>Depende de</th><td>2.1 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 2.3 — Landing Page Pública</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 2.2</span></td></tr>
+  <tr><th>Tareas</th><td>Landing page completa basada en el diseño de este plan: hero, problema/solución, demo interactiva, pricing, FAQ, CTA. Formulario de registro al free trial. Hosting en VPS con Nginx. ⚠️ Dominio pendiente (placeholder con IP)</td></tr>
+  <tr><th>Entregable</th><td>Landing page pública, responsive, optimizada SEO, con registro funcional (sin dominio aún)</td></tr>
+  <tr><th>Tiempo estimado</th><td>4-5 horas</td></tr>
+  <tr><th>Depende de</th><td>2.2 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+</div>
+
+<!-- FASE 3 -->
+<div class="card">
+<h2>💬 FASE 3 — Canales de Entrega</h2>
+<p><span class="badge badge-blue">WhatsApp, Email y Reportes</span></p>
+
+<h3>Bloque 3.1 — Alertas WhatsApp</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando Fase 2</span></td></tr>
+  <tr><th>Tareas</th><td>Integración con WhatsApp (vía OpenClaw, ya funciona). Formateo de mensajes de alerta: "🔻 [Producto] bajó 12% vs ayer. Tu precio: $499 | Competencia: $439. ¿Ajustamos?". Comandos interactivos: /status, /alertas, /reporte</td></tr>
+  <tr><th>Entregable</th><td>Alertas por WhatsApp funcionales con 5 tipos de mensaje. Comandos interactivos respondiendo en <5 segundos</td></tr>
+  <tr><th>Tiempo estimado</th><td>2-3 horas</td></tr>
+  <tr><th>Depende de</th><td>Fase 2 completa</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 3.2 — Email Transaccional</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 3.1</span></td></tr>
+  <tr><th>Tareas</th><td>Integración con SendGrid (gratis 100/día). Templates: bienvenida, confirmación de email, resumen diario de alertas, recordatorio de trial por vencer. ⚠️ Correo corporativo pendiente (usar temporal mientras)</td></tr>
+  <tr><th>Entregable</th><td>4 templates de email funcionales. Sistema de envío automático por eventos</td></tr>
+  <tr><th>Tiempo estimado</th><td>2-3 horas</td></tr>
+  <tr><th>Depende de</th><td>3.1 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 3.3 — Reportes PDF Automáticos</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 3.2</span></td></tr>
+  <tr><th>Tareas</th><td>Generación de PDF semanal con: resumen de cambios, top productos afectados, gráfica de tendencias, recomendaciones. Envío automático por email. Almacenamiento en dashboard para descarga</td></tr>
+  <tr><th>Entregable</th><td>PDF semanal generado y enviado automáticamente. Formato profesional con branding</td></tr>
+  <tr><th>Tiempo estimado</th><td>3-4 horas</td></tr>
+  <tr><th>Depende de</th><td>3.2 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+</div>
+
+<!-- FASE 4 -->
+<div class="card">
+<h2>💳 FASE 4 — Monetización</h2>
+<p><span class="badge badge-blue">Cobrar dinero real</span></p>
+
+<h3>Bloque 4.1 — Sistema de Planes y Límites</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando Fase 3</span></td></tr>
+  <tr><th>Tareas</th><td>Lógica de planes (Starter/Pro/Business/Enterprise) con límites: productos, frecuencia, features. Middleware de enforce. Página de upgrade dentro del dashboard</td></tr>
+  <tr><th>Entregable</th><td>Sistema de planes funcional. Usuario en plan Starter ve límites, puede upgradear (botón)</td></tr>
+  <tr><th>Tiempo estimado</th><td>2-3 horas</td></tr>
+  <tr><th>Depende de</th><td>Fase 3 completa</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 4.2 — Free Trial + Onboarding</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 4.1</span></td></tr>
+  <tr><th>Tareas</th><td>Sistema de trial de 14 días para planes Pro/Business. Sin tarjeta requerida. Onboarding automático: secuencia de 3 emails + 2 WhatsApp en los primeros 7 días. Alerta 3 días antes de que expire el trial</td></tr>
+  <tr><th>Entregable</th><td>Trial funcional. Usuario se registra, activa trial Pro, usa 14 días, recibe recordatorios</td></tr>
+  <tr><th>Tiempo estimado</th><td>2-3 horas</td></tr>
+  <tr><th>Depende de</th><td>4.1 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 4.3 — Integración Stripe (Placeholder)</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 4.2 + Stripe</span></td></tr>
+  <tr><th>Tareas</th><td>Integrar Stripe Checkout para suscripciones recurrentes. Webhook de eventos (payment_success, subscription_canceled, invoice_failed). Página de facturación en dashboard. Portal de cliente Stripe para gestionar método de pago. ⚠️ Placeholder hasta tener cuenta Stripe verificada</td></tr>
+  <tr><th>Entregable</th><td>Flujo de pago completo. Webhooks procesando eventos de Stripe. Plan upgrades/downgrades funcionales</td></tr>
+  <tr><th>Tiempo estimado</th><td>3-4 horas</td></tr>
+  <tr><th>Depende de</th><td>4.2 + Ricardo crea cuenta Stripe y comparte API keys</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK + Stripe</td></tr>
+</table>
+</div>
+
+<!-- FASE 5 -->
+<div class="card">
+<h2>📊 FASE 5 — Operaciones & Growth</h2>
+<p><span class="badge badge-blue">CRM, marketing y redes</span></p>
+
+<h3>Bloque 5.1 — CRM Interno</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando Fase 4</span></td></tr>
+  <tr><th>Tareas</th><td>Dashboard interno para gestionar leads (nombre, empresa, estado, pipeline). Seguimiento automático (si lead no responde en 3 días, re-contacto). Reporte semanal de pipeline a WhatsApp de Ricardo. Métricas: conversión, churn, MRR</td></tr>
+  <tr><th>Entregable</th><td>CRM funcional con pipeline visual, automatizaciones de seguimiento, y reporte semanal</td></tr>
+  <tr><th>Tiempo estimado</th><td>3-4 horas</td></tr>
+  <tr><th>Depende de</th><td>Fase 4 completa</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 5.2 — Motor de Contenido para Redes</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 5.1</span></td></tr>
+  <tr><th>Tareas</th><td>Generación automatizada de posts para X, Instagram y TikTok usando IA. Imágenes generadas con Gemini/DALL-E. Calendario editorial automatizado. Sistema de aprobación: te mando los posts a WhatsApp, tú das OK y publico. ⚠️ Cuentas de redes pendientes (standby amarillo)</td></tr>
+  <tr><th>Entregable</th><td>7 posts generados y listos para publicar. Sistema de aprobación vía WhatsApp</td></tr>
+  <tr><th>Tiempo estimado</th><td>2-3 horas</td></tr>
+  <tr><th>Depende de</th><td>5.1 completado + Ricardo crea cuentas de redes</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+
+<h3>Bloque 5.3 — Outbound Engine (Prospección Automática)</h3>
+<table>
+  <tr><th style="width:130px">Estado</th><td><span class="badge badge-orange">Esperando 5.2</span></td></tr>
+  <tr><th>Tareas</th><td>Scraping de vendedores top en Mercado Libre por categoría. Búsqueda de emails y WhatsApp de contacto. Campañas de outbound automatizadas (WhatsApp frío con análisis gratuito de sus precios como gancho). Seguimiento automático a 3, 7 y 14 días</td></tr>
+  <tr><th>Entregable</th><td>Sistema enviando 50 mensajes/día a leads cualificados. Dashboard de respuestas y conversión</td></tr>
+  <tr><th>Tiempo estimado</th><td>4-5 horas</td></tr>
+  <tr><th>Depende de</th><td>5.2 completado</td></tr>
+  <tr><th>🔒 Autorización</th><td style="color:var(--warn);font-weight:700">⏳ Pendiente tu OK</td></tr>
+</table>
+</div>
+
+<!-- BLOQUES EN STANDBY -->
+<div class="card">
+<h2>⏸️ En Standby (no bloquean)</h2>
+
+<h3>🔸 Dominio alertaprecio.mx</h3>
+<p>Lo compramos cuando el producto esté listo. Mientras, todo se sirve desde IP/subdominio temporal.</p>
+
+<h3>🔸 Correo corporativo</h3>
+<p>Igual — cuando tengamos dominio. Mientras uso un Gmail temporal para SendGrid y notificaciones.</p>
+
+<h3>🔸 Logo y branding</h3>
+<p>Lo genero con IA cuando tengamos el producto funcionando. Placeholder por ahora.</p>
+
+<h3>🔸 Stripe / Pasarela de pago</h3>
+<p>Placeholder en el código. El flujo de pago se desarrolla pero no se activa hasta que haya cuenta verificada.</p>
+
+<h3>🔸 Cuentas de redes sociales</h3>
+<p>Standby hasta Fase 5.2. El motor de contenido se construye, pero no publica hasta que existan las cuentas.</p>
+
+<h3>🔸 Cuenta bancaria / RFC facturación</h3>
+<p>Se necesitan antes de Fase 4 (cuando empecemos a cobrar). Sin prisa.</p>
+</div>
+
+<div class="card">
+<h2>📅 Timeline Visual</h2>
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="date">FASE 0 · ~8 horas</div>
+    <h3>Fundación Técnica</h3>
+    <p>Scaffolding → Base de datos → Autenticación. Sin dependencias externas. Puedo empezar HOY.</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">FASE 1 · ~14 horas</div>
+    <h3>Motor de Scraping</h3>
+    <p>ML MX → Amazon MX → Shopify → Cron + Alertas. El core del producto.</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">FASE 2 · ~15 horas</div>
+    <h3>Dashboard Web</h3>
+    <p>Overview + Productos → Alertas + Config → Landing Page. Lo que el cliente ve.</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">FASE 3 · ~9 horas</div>
+    <h3>Canales de Entrega</h3>
+    <p>WhatsApp → Email → Reportes PDF. Donde el cliente recibe valor.</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">FASE 4 · ~9 horas</div>
+    <h3>Monetización</h3>
+    <p>Planes → Free Trial → Stripe (placeholder). Empezar a cobrar.</p>
+  </div>
+  <div class="timeline-item">
+    <div class="date">FASE 5 · ~10 horas</div>
+    <h3>Operaciones & Growth</h3>
+    <p>CRM → Redes → Outbound. Escalar el negocio.</p>
+  </div>
+</div>
+<p style="margin-top:1rem;"><strong>Tiempo total estimado de desarrollo:</strong> ~65 horas de trabajo. En sprints de 2-3 bloques por semana.</p>
+</div>
+
+<div class="card">
+<h2>🚀 ¿Empezamos?</h2>
+<p>El primer bloque <strong>0.1 — Scaffolding del Proyecto</strong> no tiene dependencias externas y puedo arrancar YA. Son 1-2 horas para dejar toda la estructura lista.</p>
+<p style="margin-top:1rem; padding:1rem; background:var(--surface2); border-radius:8px; border-left:3px solid var(--accent);">
+<strong>¿Me autorizas arrancar con el Bloque 0.1?</strong> Solo necesito tu OK para empezar a construir.
+</p>
+</div>
+</section>
+
 <!-- NECESITO DE TI -->
 <section class="section" id="necesito">
 <h1>📋 Cosas que necesito de ti</h1>
-<p class="subtitle">Pendientes, autorizaciones y decisiones para arrancar</p>
+<p class="subtitle">Pendientes, autorizaciones y decisiones — priorizados por fase</p>
 
 <div class="card">
-<h2>🔴 Urgente — Para esta semana</h2>
+<h2>🔴 Bloqueantes — Necesito para avanzar</h2>
+<p style="color:var(--muted); margin-bottom:1rem;">Actualmente <strong>nada es bloqueante</strong>. La Fase 0 y Fase 1 no requieren nada externo. Abajo lo que necesito por fase.</p>
 
-<h3>1. Cuenta de correo corporativa</h3>
-<p>Necesito un correo tipo <code>hola@alertaprecio.mx</code> o <code>max@alertaprecio.mx</code> para:</p>
+<h3>Para Fase 4 (Monetización)</h3>
+<p style="color:var(--muted); margin-bottom:1rem;">Faltan varias semanas. Sin prisa. Los placeholders ya están definidos en el código.</p>
 <ul>
-  <li>Enviar correos de bienvenida y onboarding a clientes</li>
-  <li>Recibir notificaciones del sistema</li>
-  <li>Enviar reportes semanales automáticos</li>
-  <li>Registrarme en servicios (Stripe, SendGrid, etc.)</li>
+  <li><strong>Cuenta Stripe</strong> — crear en stripe.com/mx, verificar con RFC + cuenta bancaria. Me pasas las API keys</li>
+  <li><strong>RFC para facturación</strong> — necesito el RFC para emitir CFDI cuando empecemos a cobrar</li>
+  <li><strong>Cuenta bancaria</strong> — donde Stripe depositará. Puede ser personal al inicio</li>
 </ul>
-<p><strong>Opción A:</strong> Comprar dominio alertaprecio.mx (~$200 MXN/año en NicMexico) + Google Workspace (~$120 MXN/mes)<br>
-<strong>Opción B:</strong> Zoho Mail gratis con dominio propio (plan Forever Free, 5GB)<br>
-<strong>Opción C:</strong> Usar un Gmail gratuito tipo alertaprecio.mx@gmail.com (menos profesional pero $0)</p>
 
-<h3>2. Dominio alertaprecio.mx</h3>
-<p>Necesito que compres el dominio. Es barato ($200 MXN/año) y fundamental para todo: landing, correos, credibilidad.</p>
-<p>Se compra en: <a href="https://nicmexico.mx" target="_blank">nicmexico.mx</a> o <a href="https://namecheap.com" target="_blank">Namecheap</a></p>
-
-<h3>3. Cuenta de Stripe (o pasarela de pago MX)</h3>
-<p>Para cobrar suscripciones necesito que:</p>
+<h3>Para Fase 5 (Crecimiento) — aún más adelante</h3>
 <ul>
-  <li>Crear cuenta en <a href="https://stripe.com/mx" target="_blank">Stripe México</a></li>
-  <li>Completar verificación (RFC, identificación, cuenta bancaria)</li>
-  <li>Compartirme las API keys (publishable + secret)</li>
+  <li><strong>Dominio alertaprecio.mx</strong> — ~$200 MXN/año. Comprar cuando el producto esté listo para mostrar</li>
+  <li><strong>Correo corporativo</strong> — con Zoho Mail (gratis) una vez tengamos dominio</li>
+  <li><strong>Cuentas de redes</strong> — @AlertaPrecioMX en X, Instagram, TikTok. Crearlas antes de Fase 5.2</li>
 </ul>
-<p><strong>Alternativa:</strong> Mercado Pago — más fácil en México pero menos flexible para suscripciones.</p>
 </div>
 
 <div class="card">
-<h2>🟡 Importante — Antes del lanzamiento</h2>
-
-<h3>4. Logotipo de AlertaPrecio</h3>
-<p>Puedo generarlo yo con IA, pero necesito tu visto bueno. O si prefieres contratar un diseñador en Fiverr (~$20-50 USD).</p>
-
-<h3>5. Cuenta de X/Twitter y redes sociales</h3>
-<p>Crear las cuentas @AlertaPrecioMX. Yo genero el contenido, tú solo creas las cuentas y me pasas las credenciales si quieres que publique directo.</p>
-
-<h3>6. Cuenta bancaria para el negocio</h3>
-<p>Stripe deposita a cuenta bancaria mexicana. Si no tienes una separada, podemos empezar con tu cuenta personal mientras.</p>
-
-<h3>7. RFC para facturación</h3>
-<p>Necesito saber bajo qué RFC emitimos facturas (CFDI). Puede ser persona física con actividad empresarial o moral.</p>
-</div>
-
-<div class="card">
-<h2>🟢 Decisiones que necesito que tomes</h2>
+<h2>🟢 Decisiones ya tomadas</h2>
 
 <table>
-  <tr><th>Decisión</th><th>Opción A</th><th>Opción B</th><th>Recomendación</th></tr>
-  <tr>
-    <td>Pasarela de pago</td>
-    <td>Stripe</td>
-    <td>Mercado Pago</td>
-    <td><span class="badge badge-green">Stripe</span> — mejor para SaaS/suscripciones</td>
-  </tr>
-  <tr>
-    <td>Correo</td>
-    <td>Google Workspace</td>
-    <td>Zoho Mail (gratis)</td>
-    <td><span class="badge badge-green">Zoho</span> — empezar sin costo</td>
-  </tr>
-  <tr>
-    <td>Hosting extra</td>
-    <td>Mismo VPS Hostinger</td>
-    <td>VPS separado ($5/mes)</td>
-    <td><span class="badge badge-green">Mismo VPS</span> — ahorrar al inicio</td>
-  </tr>
-  <tr>
-    <td>Nombre final</td>
-    <td>AlertaPrecio</td>
-    <td>PrecioVigia / otro</td>
-    <td><span class="badge badge-green">AlertaPrecio</span> — disponible y descriptivo</td>
-  </tr>
-  <tr>
-    <td>Precios en</td>
-    <td>MXN (local)</td>
-    <td>USD (global)</td>
-    <td><span class="badge badge-green">MXN</span> — ✅ Decidido</td>
-  </tr>
-  <tr>
-    <td>Logo</td>
-    <td>IA (yo lo genero)</td>
-    <td>Diseñador Fiverr</td>
-    <td><span class="badge badge-green">IA primero</span> — iterar rápido, $0</td>
-  </tr>
+  <tr><th>Decisión</th><th>Elegido</th><th>Estado</th></tr>
+  <tr><td>Nombre</td><td>AlertaPrecio</td><td><span class="badge badge-green">✅</span></td></tr>
+  <tr><td>Precios en</td><td>MXN (pesos mexicanos)</td><td><span class="badge badge-green">✅</span></td></tr>
+  <tr><td>Pasarela de pago</td><td>Stripe (placeholder hasta Fase 4)</td><td><span class="badge badge-green">✅</span></td></tr>
+  <tr><td>Hosting</td><td>Mismo VPS Hostinger</td><td><span class="badge badge-green">✅</span></td></tr>
+  <tr><td>Correo</td><td>Zoho Mail gratis (cuando haya dominio)</td><td><span class="badge badge-green">✅</span></td></tr>
+  <tr><td>Logo</td><td>IA — después del MVP</td><td><span class="badge badge-green">✅</span></td></tr>
 </table>
 </div>
 
 <div class="card">
-<h2>💵 Inversión que necesito de ti</h2>
-<table>
-  <tr><th>Concepto</th><th>Costo</th><th>Cuándo</th></tr>
-  <tr><td>Dominio alertaprecio.mx</td><td>~$200 MXN</td><td>AHORA</td></tr>
-  <tr><td>Correo (Zoho — gratis primer año)</td><td>$0 MXN</td><td>Esta semana</td></tr>
-  <tr><td>Proxy residencial (si scraping lo requiere)</td><td>$0-400 MXN/mes</td><td>Cuando iniciemos scraping</td></tr>
-  <tr><td>Google Ads / Meta Ads (prueba)</td><td>$1,000 MXN/mes</td><td>Mes 2-3</td></tr>
-  <tr style="font-weight:bold; background: var(--surface2);"><td>TOTAL INMEDIATO</td><td>~$200 MXN</td><td></td></tr>
-  <tr style="font-weight:bold; background: var(--surface2);"><td>TOTAL MENSUAL (desde mes 2)</td><td>~$1,400 MXN</td><td></td></tr>
-</table>
-<p style="margin-top:1rem;"><strong>Lo único indispensable HOY:</strong> el dominio ($200 MXN). Con eso ya puedo arrancar landing + correos. Lo demás se va activando conforme crecemos.</p>
-</div>
-
-<div class="card">
-<h2>⏳ Timeline de dependencias</h2>
+<h2>⏳ Timeline de lo que necesito de ti</h2>
 <div class="timeline">
   <div class="timeline-item">
-    <div class="date">BLOQUEANTE — Día 1</div>
-    <h3>Comprar dominio alertaprecio.mx</h3>
-    <p>Sin dominio no hay landing, correos ni credibilidad. $200 MXN. 5 minutos.</p>
+    <div class="date">Fase 0-3 · AHORA</div>
+    <h3>NADA — solo tu OK para cada bloque</h3>
+    <p>Las primeras 3 fases no requieren nada externo. Solo necesito que me autorices cada bloque del plan de Milestones.</p>
   </div>
   <div class="timeline-item">
-    <div class="date">BLOQUEANTE — Día 3</div>
-    <h3>Crear cuenta Stripe y verificar</h3>
-    <p>Sin Stripe no hay cobros. La verificación tarda 2-5 días hábiles. Empezar YA.</p>
+    <div class="date">Fase 4 · En ~3 semanas</div>
+    <h3>Cuenta Stripe + RFC</h3>
+    <p>Para activar cobros. La verificación tarda 2-5 días. Con anticipación.</p>
   </div>
   <div class="timeline-item">
-    <div class="date">Semana 1</div>
-    <h3>Configurar correo corporativo</h3>
-    <p>Necesito poder enviar correos de onboarding y notificaciones.</p>
-  </div>
-  <div class="timeline-item">
-    <div class="date">Semana 2</div>
-    <h3>Crear cuentas de redes sociales</h3>
-    <p>@AlertaPrecioMX en X, Instagram, TikTok. Yo genero el contenido.</p>
+    <div class="date">Fase 5 · En ~4 semanas</div>
+    <h3>Dominio + correo + redes</h3>
+    <p>Dominio ($200 MXN), correo (Zoho gratis), y cuentas @AlertaPrecioMX.</p>
   </div>
 </div>
 </div>
