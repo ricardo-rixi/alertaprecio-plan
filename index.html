@@ -951,20 +951,29 @@ chatToggle.addEventListener('click', () => {
   chatPanel.classList.toggle('open');
 });
 
-// Send comment to backend (stores in a file that Max can read)
+// Send comment to Max via webhook (Max monitors and responds on WhatsApp)
+const WEBHOOK_URL = 'https://webhook.site/3d529484-86eb-4b7b-9761-a06c380ba9e3';
+
 async function sendComment(text) {
   const section = document.querySelector('.section.active').id || 'home';
+  const sectionName = document.querySelector('.section.active h1')?.textContent || section;
   try {
-    const resp = await fetch('/api/comment', {
+    const resp = await fetch(WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ section, text, timestamp: new Date().toISOString() })
+      body: JSON.stringify({
+        section: section,
+        sectionName: sectionName,
+        text: text,
+        timestamp: new Date().toISOString(),
+        user: 'Ricardo',
+        page: window.location.href
+      })
     });
     return resp.ok;
   } catch(e) {
-    // If API not available yet, store locally and show
-    console.log('Comment saved locally');
-    return true;
+    console.log('Webhook error:', e);
+    return false;
   }
 }
 
