@@ -993,11 +993,19 @@ chatSend.addEventListener('click', async () => {
   if (!text) return;
   addMessage(text, true);
   chatInput.value = '';
+  chatSend.disabled = true;
+  chatSend.textContent = '...';
   const ok = await sendComment(text);
+  chatSend.disabled = false;
+  chatSend.textContent = 'Enviar';
   if (ok) {
     setTimeout(() => {
-      addMessage('¡Recibido! Lo reviso y actualizo el plan. También puedes mandarme WhatsApp directo.', false);
-    }, 500);
+      addMessage('✅ Recibido. Max te responderá por WhatsApp en unos minutos.', false);
+    }, 600);
+  } else {
+    setTimeout(() => {
+      addMessage('❌ Error al enviar. Escribe a Max directo por WhatsApp.', false);
+    }, 600);
   }
 });
 
