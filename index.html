@@ -1398,8 +1398,13 @@ Saludos!</pre>
       var resp = await fetch(OUTBOX_API);
       var data = await resp.json();
       if (!data.data) return;
-      for (var i = 0; i < data.data.length; i++) {
-        if (data.data[i].uuid === lastPollId) break;
+      // Find cutoff: only process messages NEWER than lastPollId
+      var cutoff = data.data.length;
+      for (var j = 0; j < data.data.length; j++) {
+        if (data.data[j].uuid === lastPollId) { cutoff = j; break; }
+      }
+      // Process OLDEST to NEWEST so the NEWEST status wins
+      for (var i = cutoff - 1; i >= 0; i--) {
         try {
           var c = JSON.parse(data.data[i].content);
           if (c.type === 'milestone_status' && c.block) setState(c.block, c.status);
@@ -1415,7 +1420,8 @@ Saludos!</pre>
       var resp = await fetch(OUTBOX_API);
       var data = await resp.json();
       if (data.data) {
-        for (var i = 0; i < data.data.length; i++) {
+        // Process OLDEST to NEWEST so the NEWEST status wins
+        for (var i = data.data.length - 1; i >= 0; i--) {
           try {
             var c = JSON.parse(data.data[i].content);
             if (c.type === 'milestone_status' && c.block) setState(c.block, c.status);
