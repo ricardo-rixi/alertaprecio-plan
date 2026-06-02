@@ -1353,7 +1353,17 @@ Saludos!</pre>
     failed: ['❌ Fallo — revisar', 'btn-fail', null]
   };
 
-  function getState(bid) { return blockStates[bid] || 'pending_auth'; }
+  function getState(bid) {
+    // Check localStorage first for persistence across refreshes
+    var saved = localStorage.getItem('ms_' + bid);
+    if (saved && STATES[saved]) return saved;
+    return blockStates[bid] || 'pending_auth';
+  }
+
+  function setState(bid, state) {
+    blockStates[bid] = state;
+    localStorage.setItem('ms_' + bid, state);
+  }
 
   function renderButtons() {
     var els = document.querySelectorAll('.milestone-btn');
@@ -1373,7 +1383,7 @@ Saludos!</pre>
             btnEl.textContent = 'Enviando...';
             try {
               await fetch(INBOX, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'milestone_authorize', block:b, user:'Ricardo', timestamp: new Date().toISOString()})});
-              blockStates[b] = 'authorized';
+              setState(b, 'authorized');
               renderButtons();
             } catch(e) { btnEl.disabled = false; btnEl.textContent = cfg[2]; }
           };
@@ -1392,7 +1402,7 @@ Saludos!</pre>
         if (data.data[i].uuid === lastPollId) break;
         try {
           var c = JSON.parse(data.data[i].content);
-          if (c.type === 'milestone_status' && c.block) blockStates[c.block] = c.status;
+          if (c.type === 'milestone_status' && c.block) setState(c.block, c.status);
         } catch(e) {}
       }
       if (data.data.length > 0) lastPollId = data.data[0].uuid;
@@ -1408,7 +1418,7 @@ Saludos!</pre>
         for (var i = 0; i < data.data.length; i++) {
           try {
             var c = JSON.parse(data.data[i].content);
-            if (c.type === 'milestone_status' && c.block) blockStates[c.block] = c.status;
+            if (c.type === 'milestone_status' && c.block) setState(c.block, c.status);
           } catch(e) {}
         }
         if (data.data.length > 0) lastPollId = data.data[0].uuid;
